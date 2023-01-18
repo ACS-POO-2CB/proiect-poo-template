@@ -2,6 +2,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
@@ -282,7 +283,12 @@ public class Tests {
         BufferedReader actualOutputFile = new BufferedReader(new StringReader(actualOutput));
         String expectedJsonLine;
         String actualJsonLine;
-        while ((expectedJsonLine = expectedOutput.readLine()) != null && (actualJsonLine = actualOutputFile.readLine()) !=null) {
+        while ((expectedJsonLine = expectedOutput.readLine()) != null) {
+            actualJsonLine = actualOutputFile.readLine();
+            if(actualJsonLine == null) {
+                Assertions.fail();
+            }
+
             JsonNode jsonNodeActual = objectMapper.readTree(actualJsonLine.toLowerCase());
             JsonNode jsonNodeExpected = objectMapper.readTree(expectedJsonLine.toLowerCase());
 
